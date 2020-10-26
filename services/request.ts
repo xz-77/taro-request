@@ -26,13 +26,13 @@ const request = {
     return create<T, R>({ url, data, baseUrl, header, method: 'GET' })
   },
   post: <T, R>(url: string, data?: T, baseUrl?: string, header?: any): Taro.RequestTask<R> => {
-    return create({ url, data, baseUrl, header, method: 'POST' })
+    return create<T, R>({ url, data, baseUrl, header, method: 'POST' })
   },
   put: <T, R>(url: string, data?: T, baseUrl?: string, header?: any): Taro.RequestTask<R> => {
-    return create({ url, data, baseUrl, header, method: 'PUT' })
+    return create<T, R>({ url, data, baseUrl, header, method: 'PUT' })
   },
   delete: <T, R>(url: string, data?: T, baseUrl?: string, header?: any): Taro.RequestTask<R> => {
-    return create({ url, data, baseUrl, header, method: 'DELETE' })
+    return create<T, R>({ url, data, baseUrl, header, method: 'DELETE' })
   },
 }
 
