@@ -8,6 +8,6 @@
 
 ```javascript
 export function name(params: params) {
-  return request.get<params,response >('xxxx', params, 'xx');
+  return request.get<params,response>('xxxx', params, 'xx');
 }
 ```
