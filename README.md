@@ -10,3 +10,9 @@ export function name(params: params) {
   return request.get<params,response>('xxxx', params, 'xx');
 }
 ```
+
+#### v1.0.1
+
+* 完善逻辑
+  * 增加setTimeout，解决在request串行请求的情况下多次闪现loading问题(也就是串行请求会有多个loading)。
+  * 增加clearTimeout，解决在request串行请求任意接口报错的提示问题，并且去除对其他接口的请求的影响。(也就是提示语存在时间1.5s，计数器直接-1,如果依然还有接口未返回就继续loading，如果所有接口都已请求完毕就全部结束)

@@ -16,6 +16,7 @@ enum HTTP_STATUS {
 }
 
 let REQUEST_NUM = 0;
+let TIME: NodeJS.Timeout | null;
 
 export const interceptor = (chain: Chain) => {
   increaseRequest();
@@ -49,9 +50,15 @@ export const interceptor = (chain: Chain) => {
   })
 }
 
-const errShowToast = (title: string) => {
+const errShowToast = (message: string) => {
   isHideLoading();
-  Taro.showToast({ title, icon: 'none', mask: true, duration: 1500 });
+  if (TIME) {
+    console.log('clearTimeout->');
+    REQUEST_NUM -= 1;
+    clearTimeout(TIME);
+    TIME = null;
+  }
+  Taro.showToast(message);
   setTimeout(() => {
     isShowLoading();
   }, 1500);
@@ -66,31 +73,28 @@ const isHideLoading = () => {
 
 const isShowLoading = () => {
   if (REQUEST_NUM > 0) {
-    Taro.showLoading({
-      title: 'loading...',
-      mask: true,
-    });
+    console.log('再次开始loading');
+    Taro.showLoading();
   }
 }
 
 const increaseRequest = () => {
-
   if (REQUEST_NUM === 0) {
     console.log('开始loading');
-    Taro.showLoading({
-      title: 'loading...',
-      mask: true,
-    });
+    Taro.showLoading();
   }
   REQUEST_NUM += 1;
   console.log('REQUEST_NUM->', REQUEST_NUM)
 }
 
 const reduceRequest = () => {
-  REQUEST_NUM -= 1;
-  console.log('REQUEST_NUM->', REQUEST_NUM)
-  if (REQUEST_NUM === 0) {
-    console.log('结束loading');
-    Taro.hideLoading();
-  }
+  TIME = setTimeout(() => {
+    REQUEST_NUM -= 1;
+    console.log('REQUEST_NUM->', REQUEST_NUM)
+    if (REQUEST_NUM === 0) {
+      console.log('结束loading');
+      Taro.hideLoading();
+    }
+  }, 300);
+
 }
